@@ -29,9 +29,11 @@ import { AuthService } from '../../../core/services/auth.service';
       <mat-card class="login-card">
         <mat-card-header>
           <div class="login-header">
-            <mat-icon class="login-icon">task_alt</mat-icon>
-            <mat-card-title>TodoApp</mat-card-title>
-            <mat-card-subtitle>Sign in to your account</mat-card-subtitle>
+            <div class="login-header-top">
+              <mat-icon class="login-icon">task_alt</mat-icon>
+              <h1 class="app-title">TodoApp</h1>
+            </div>
+            <p class="login-subtitle">Sign in to your account</p>
           </div>
         </mat-card-header>
         
@@ -106,16 +108,36 @@ import { AuthService } from '../../../core/services/auth.service';
     }
 
     .login-header {
-      text-align: center;
-      padding: 20px 0;
+      padding: 20px 24px 0;
+    }
+
+    .login-header-top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
     }
 
     .login-icon {
-      font-size: 48px;
-      height: 48px;
-      width: 48px;
+      font-size: 36px;
+      height: 36px;
+      width: 36px;
       color: #667eea;
-      margin-bottom: 16px;
+    }
+
+    .app-title {
+      font-size: 28px;
+      font-weight: 500;
+      color: #333;
+      margin: 0;
+    }
+
+    .login-subtitle {
+      text-align: left;
+      color: #666;
+      font-size: 14px;
+      margin: 0 0 20px 0;
     }
 
     .login-form {
