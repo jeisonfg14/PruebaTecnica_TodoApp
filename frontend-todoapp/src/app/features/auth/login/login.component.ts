@@ -176,7 +176,6 @@ export class LoginComponent {
       this.loading = true;
       this.errorMessage = '';
       
-      // Try real authentication first
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
           localStorage.setItem('token', response.token);
@@ -184,20 +183,8 @@ export class LoginComponent {
           this.loading = false;
         },
         error: (error) => {
-          // For demo purposes, if credentials match our test user, proceed
-          const email = this.loginForm.get('email')?.value;
-          const password = this.loginForm.get('password')?.value;
-          
-          if (email === 'test@example.com' && password === 'TestPassword123!') {
-            // Simulate successful login for demo
-            const mockToken = 'demo-token-' + Date.now();
-            localStorage.setItem('token', mockToken);
-            this.router.navigate(['/dashboard']);
-            this.loading = false;
-          } else {
-            this.errorMessage = error.message || 'Login failed';
-            this.loading = false;
-          }
+          this.errorMessage = error.error?.message || error.message || 'Login failed';
+          this.loading = false;
         }
       });
     }

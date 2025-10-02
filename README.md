@@ -25,7 +25,7 @@ npm start
 Aplicación disponible en: `http://localhost:4200`
 
 ### Credenciales de prueba
-- Email: `newuser@example.com`
+- Email: `test@example.com`
 - Password: `TestPassword123!`
 
 ## Cómo ejecutar las pruebas

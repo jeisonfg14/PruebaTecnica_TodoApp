@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
 
 import { TaskService } from '../../../core/services/task.service';
+import { NotificationService } from '../../../core/services/notification.service';
 import { TodoTask, CreateTodoTask } from '../../../core/models';
 
 @Component({
@@ -303,7 +304,8 @@ export class TaskListComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private notificationService: NotificationService
   ) {
     this.taskForm = this.fb.group({
       title: ['', [Validators.required]],
@@ -340,10 +342,12 @@ export class TaskListComponent implements OnInit {
           this.taskForm.reset();
           this.taskForm.patchValue({ priority: 2 });
           this.creating = false;
+          this.notificationService.success('Task created successfully!');
         },
         error: (error: any) => {
           console.error('Error creating task:', error);
           this.creating = false;
+          this.notificationService.error('Failed to create task. Please try again.');
         }
       });
     }
@@ -356,26 +360,38 @@ export class TaskListComponent implements OnInit {
         if (index !== -1) {
           this.tasks[index] = updatedTask;
           this.applyFilter();
+          const status = updatedTask.isCompleted ? 'completed' : 'pending';
+          this.notificationService.success(`Task marked as ${status}`);
         }
       },
       error: (error: any) => {
         console.error('Error updating task:', error);
+        this.notificationService.error('Failed to update task. Please try again.');
       }
     });
   }
 
   deleteTask(task: TodoTask): void {
-    if (confirm('Are you sure you want to delete this task?')) {
-      this.taskService.deleteTask(task.id).subscribe({
-        next: () => {
-          this.tasks = this.tasks.filter(t => t.id !== task.id);
-          this.applyFilter();
-        },
-        error: (error: any) => {
-          console.error('Error deleting task:', error);
-        }
-      });
-    }
+    this.notificationService.confirm(
+      'Delete Task',
+      `Are you sure you want to delete "${task.title}"? This action cannot be undone.`,
+      'Delete',
+      'Cancel'
+    ).subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.taskService.deleteTask(task.id).subscribe({
+          next: () => {
+            this.tasks = this.tasks.filter(t => t.id !== task.id);
+            this.applyFilter();
+            this.notificationService.success('Task deleted successfully');
+          },
+          error: (error: any) => {
+            console.error('Error deleting task:', error);
+            this.notificationService.error('Failed to delete task. Please try again.');
+          }
+        });
+      }
+    });
   }
 
   setFilter(filter: 'all' | 'pending' | 'completed'): void {

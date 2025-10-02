@@ -65,7 +65,7 @@ namespace TodoApi.Data
                     Email = "test@example.com",
                     FirstName = "Test",
                     LastName = "User",
-                    PasswordHash = "$2a$11$J3IwVhV8pFYcAGgOGkdx2.8VhZcJKzqNVxF.1Xtv0wNjCz5Z7H3sW", // TestPassword123!
+                    PasswordHash = "$2a$11$jPw3XmB4klBtb6orV8xuvuyAXeHYq7tpsu8DusnflzSb48yeIdUQm", // TestPassword123!
                     CreatedAt = DateTime.UtcNow
                 }
             );
